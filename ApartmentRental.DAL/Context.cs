@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 
 namespace ApartmentRental.DAL
 {
@@ -10,21 +11,20 @@ namespace ApartmentRental.DAL
         {
             base.OnModelCreating(modelBuilder);
 
-            //Database.EnsureCreated();
-
             modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
         }
+    }
 
-        public Context()
+    public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Context>
+    {
+        public Context CreateDbContext(string[] args)
         {
-            Database.EnsureCreated();
-        }
+            var optionsBuilder = new DbContextOptionsBuilder<Context>();
 
-        protected override void OnConfiguring(DbContextOptionsBuilder builder)
-        {
-            builder.UseSqlServer("Server=localhost;Database=ApartmentRental;Trusted_Connection=True;TrustServerCertificate=True;");
-
-            base.OnConfiguring(builder);
+            optionsBuilder.UseSqlServer(
+                "Server=localhost;Database=ApartmentRental;Trusted_Connection=True;TrustServerCertificate=True;");
+            
+            return new Context(optionsBuilder.Options);
         }
     }
 }
