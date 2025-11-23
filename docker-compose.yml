@@ -4,9 +4,7 @@ services:
   api:
     container_name: apartmentrentalapi
     restart: unless-stopped
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: aquaprogit/apartmentrentailapi:latest
     ports:
       - "8080:8080"
       - "8081:8081"
